@@ -1,0 +1,11 @@
+.button_type_like_active {
+    background-image: url(../../../../../images/like-button-active.svg);
+    opacity: 1;
+    grid-area: like;
+    width: 22px;
+    height: 19px;
+    background-size: cover;
+    background-color: inherit;
+    padding: 0;
+    margin-top: 21px;
+}

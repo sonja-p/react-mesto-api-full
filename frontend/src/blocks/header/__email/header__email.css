@@ -1,0 +1,8 @@
+.header__email {
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 500;
+  margin: 0;
+}

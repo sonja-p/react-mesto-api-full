@@ -1,0 +1,11 @@
+.page__footer {
+    width: 100%;
+    margin: 66px auto 0;
+}
+
+@media screen and (max-width: 960px) {
+    .page__footer {
+        width: 88.1%;
+        margin: 48px auto 0;
+    }
+}

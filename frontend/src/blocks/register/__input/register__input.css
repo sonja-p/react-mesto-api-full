@@ -1,0 +1,42 @@
+.register__input {
+  width: 100%;
+  font-family: "Inter", Arial, sans-serif;
+  border: none;
+  padding: 0 0 8px;
+  font-size: 14px;
+  line-height: 17px;
+  border-bottom: 2px solid #cccccc;
+  margin-bottom: 29px;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.register__input:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.register__input:-webkit-autofill,
+.register__input:-webkit-autofill:hover,
+.register__input:-webkit-autofill:focus,
+.register__input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+          box-shadow: 0 0 0 30px #000000 inset !important;
+}
+
+.register__input::-webkit-input-placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.register__input::-moz-placeholder {
+  color: #cccccc;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+@media screen and (max-width: 540px) {
+  .register__input {
+    padding-bottom: 13px;
+  }
+}
