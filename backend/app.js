@@ -7,8 +7,11 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const cors = require('./middlewares/cors');
 const handleErrors = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+require('dotenv').config();
 
 const PORT = 3000;
 
@@ -34,6 +37,15 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(requestLogger);
 
+app.use(cors);
+
+// удалить этот код после успешного прохождения ревью
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -43,10 +55,6 @@ app.post('/signin', celebrate({
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().allow('').max(30),
-    about: Joi.string().allow('').max(30),
-    // eslint-disable-next-line no-useless-escape
-    avatar: Joi.string().allow('').pattern(/https?:\/\/(www.)?[\w\-]*\.\w{2}\/?[a-z0-9\S]*/),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),

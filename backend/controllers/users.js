@@ -2,14 +2,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const { JWT_SECRET = 'some-secret-key' } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res
         .cookie('jwt', token, {
           maxAge: 3600000,
@@ -22,33 +22,6 @@ module.exports.login = (req, res, next) => {
       error.statusCode = 401;
       next(error);
     });
-};
-
-module.exports.findUserById = (req, res, next) => {
-  User.findById(req.params.userId)
-    .then((user) => {
-      if (!user) {
-        const error = new Error('Запрашиваемый пользователь не найден');
-        error.statusCode = 404;
-        next(error);
-      } else {
-        res.send({ data: user });
-      }
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        const error = new Error('Запрашиваемый пользователь не найден');
-        error.statusCode = 404;
-        next(error);
-      }
-      next(err);
-    });
-};
-
-module.exports.findUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send({ users }))
-    .catch((err) => next(err));
 };
 
 module.exports.findCurrentUserById = (req, res, next) => {
@@ -73,7 +46,7 @@ module.exports.findCurrentUserById = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    email, password,
   } = req.body;
 
   const hash = bcrypt.hashSync(password, 10);
@@ -86,7 +59,7 @@ module.exports.createUser = (req, res, next) => {
         next(error);
       } else {
         User.create({
-          name, about, avatar, email, password: hash,
+          email, password: hash,
         })
           .then((newUser) => res.send({
             data: {
