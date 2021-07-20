@@ -10,15 +10,15 @@ router.get('/me', findCurrentUserById);
 
 router.patch('/me', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().allow('').max(30),
-    about: Joi.string().allow('').max(30),
+    name: Joi.string().max(30),
+    about: Joi.string().max(30),
   }),
 }), updateProfile);
 
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
     // eslint-disable-next-line no-useless-escape
-    avatar: Joi.string().allow('').required().pattern(/https?:\/\/(www.)?[\w\-]*\.\w{2}\/?[a-z0-9\S]*/),
+    avatar: Joi.string().required().pattern(/https?:\/\/(www.)?[\w\-]*\.\w{2}\/?[a-z0-9\S]*/),
   }),
 }), updateAvatar);
 

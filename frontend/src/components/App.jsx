@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
-import Register from "./Register";
-import InfoTooltip from "./InfoTooltip";
-import ProtectedRoute from "./ProtectedRoute";
-import Login from "./Login";
-import Main from "./Main";
-import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import api from "../utils/api";
-import auth from "../utils/auth";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import Spinner from "./Spinner";
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
+import React, { useState, useEffect } from 'react';
+import {
+  Route, Switch, useHistory, Redirect,
+} from 'react-router-dom';
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
+import Login from './Login';
+import Main from './Main';
+import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
+import api from '../utils/api';
+import auth from '../utils/auth';
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import Spinner from './Spinner';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
-    name: "",
-    about: "",
-    avatar: "",
-    _id: "",
+    name: '',
+    about: '',
+    avatar: '',
+    _id: '',
   });
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -34,10 +38,10 @@ function App() {
   // устанавливаем значение null для отображения спиннера при загрузке сайта
   const [loggedIn, setLoggedIn] = useState(null);
   const [userData, setUserData] = useState({
-    _id: "",
-    email: "",
+    _id: '',
+    email: '',
   });
-  const [message, setMessage] = useState({ text: "", type: "" });
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const history = useHistory();
 
@@ -47,7 +51,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      history.push("/");
+      history.push('/');
     }
   }, [loggedIn]);
 
@@ -55,23 +59,24 @@ function App() {
     auth
       .register(password, email)
       .then((data) => {
-        const { _id, email } = data.data;
-        setUserData({ _id, email });
+        console.log(data);
+        const { _id, userEmail } = data.data;
+        setUserData({ _id, userEmail });
 
         setIsInfoTooltipPopupOpen(true);
         setMessage({
-          text: "Вы успешно зарегистрировались!",
-          type: "success",
+          text: 'Вы успешно зарегистрировались!',
+          type: 'success',
         });
       })
-      .then(() => history.push("/"))
+      .then(() => history.push('/'))
       .catch((error) => {
         handleError(error);
         if (error) {
           setIsInfoTooltipPopupOpen(true);
           setMessage({
-            text: "Что-то пошло не так! Попробуйте ещё раз.",
-            type: "fail",
+            text: 'Что-то пошло не так! Попробуйте ещё раз.',
+            type: 'fail',
           });
         }
       });
@@ -81,8 +86,9 @@ function App() {
     auth
       .authorize(password, email)
       .then((data) => {
-        const { token } = data;
-        localStorage.setItem("token", token);
+        console.log(data);
+        const { id } = data;
+        localStorage.setItem('_id', id);
         setLoggedIn(true);
         setUserData({ email });
       })
@@ -91,27 +97,28 @@ function App() {
 
   const handleLogout = () => {
     setUserData({
-      _id: "",
-      email: "",
+      _id: '',
+      email: '',
     });
     setLoggedIn(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem('id');
   };
 
   const handleSignIn = () => {
-    history.push("/sign-in");
+    history.push('/sign-in');
   };
 
   const handleSignUp = () => {
-    history.push("/sign-up");
+    history.push('/sign-up');
   };
 
   const checkToken = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const id = localStorage.getItem('id');
+    if (id) {
       auth
-        .getContent(token)
+        .getContent()
         .then((data) => {
+          console.log(data);
           const { _id, email } = data.data;
           setUserData({ _id, email });
           setLoggedIn(true);
@@ -133,7 +140,7 @@ function App() {
         setCurrentUser(data);
       })
       .catch((err) => {
-        console.log("Ошибка при загрузке информации пользователя", err.message);
+        console.log('Ошибка при загрузке информации пользователя', err.message);
       });
   }, []);
 
@@ -176,8 +183,8 @@ function App() {
       })
       .catch((err) => {
         console.log(
-          "Ошибка при загрузке новой информации пользователя",
-          err.message
+          'Ошибка при загрузке новой информации пользователя',
+          err.message,
         );
       });
   };
@@ -190,7 +197,7 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => {
-        console.log("Ошибка при загрузке аватара пользователя", err.message);
+        console.log('Ошибка при загрузке аватара пользователя', err.message);
       });
   };
 
@@ -204,7 +211,7 @@ function App() {
         setCards(data);
       })
       .catch((err) => {
-        console.log("Ошибка при загрузке карточек", err.message);
+        console.log('Ошибка при загрузке карточек', err.message);
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -214,12 +221,10 @@ function App() {
 
     (!isLiked ? api.addLike(card._id) : api.deleteLike(card._id))
       .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
+        setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
       })
       .catch((err) => {
-        console.log("Ошибка при постановке лайка", err.message);
+        console.log('Ошибка при постановке лайка', err.message);
       });
   }
 
@@ -230,7 +235,7 @@ function App() {
         setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => {
-        console.log("Ошибка при удалении карточки", err.message);
+        console.log('Ошибка при удалении карточки', err.message);
       });
   }
 
@@ -238,11 +243,11 @@ function App() {
     api
       .addNewCard(card)
       .then((newCard) => {
-        setCards((cards) => [newCard, ...cards]);
+        setCards((allCards) => [newCard, ...allCards]);
         closeAllPopups();
       })
       .catch((err) => {
-        console.log("Ошибка при загрузке нового места", err.message);
+        console.log('Ошибка при загрузке нового места', err.message);
       });
   }
 
@@ -281,9 +286,10 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
               handleLogout={handleLogout}
+              // eslint-disable-next-line react/jsx-no-duplicate-props
               loggedIn={loggedIn}
               email={userData.email}
-            ></ProtectedRoute>
+            />
           </Switch>
           <Footer />
         </div>

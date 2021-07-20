@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import Header from "./Header";
+import { Link } from 'react-router-dom';
+import { useState, React } from 'react';
+import PropTypes from 'prop-types';
+import Header from './Header';
 
 const Register = ({ handleRegister, loggedIn, handleSignIn }) => {
   const [data, setData] = useState({
-    password: "",
-    email: "",
+    password: '',
+    email: '',
   });
 
   const handleChange = (e) => {
@@ -26,7 +27,7 @@ const Register = ({ handleRegister, loggedIn, handleSignIn }) => {
     <>
       <Header
         handleClick={handleSignIn}
-        buttonName={"Войти"}
+        buttonName="Войти"
         loggedIn={loggedIn}
       />
       <div className="register page__register">
@@ -39,7 +40,7 @@ const Register = ({ handleRegister, loggedIn, handleSignIn }) => {
             type="email"
             placeholder="Email"
             onChange={handleChange}
-            value={data.email || ""}
+            value={data.email || ''}
             required
           />
           <input
@@ -49,7 +50,7 @@ const Register = ({ handleRegister, loggedIn, handleSignIn }) => {
             type="password"
             placeholder="Пароль"
             onChange={handleChange}
-            value={data.password || ""}
+            value={data.password || ''}
             autoComplete="on"
             required
           />
@@ -66,6 +67,12 @@ const Register = ({ handleRegister, loggedIn, handleSignIn }) => {
       </div>
     </>
   );
+};
+
+Register.propTypes = {
+  handleRegister: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  handleSignIn: PropTypes.func.isRequired,
 };
 
 export default Register;

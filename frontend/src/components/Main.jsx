@@ -1,8 +1,10 @@
-import { useContext } from "react";
-import Card from "./Card";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import Spinner from "./Spinner";
-import Header from "./Header";
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import { useContext, React } from 'react';
+import PropTypes from 'prop-types';
+import Card from './Card';
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import Spinner from './Spinner';
+import Header from './Header';
 
 function Main({
   onEditProfile,
@@ -15,7 +17,7 @@ function Main({
   onCardDelete,
   handleLogout,
   loggedIn,
-  email
+  email,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -23,7 +25,7 @@ function Main({
     <>
       <Header
         handleClick={handleLogout}
-        buttonName={"Выйти"}
+        buttonName="Выйти"
         loggedIn={loggedIn}
         email={email}
       />
@@ -39,7 +41,7 @@ function Main({
               onClick={onEditAvatar}
               className="button button_type_change-avatar"
               type="button"
-            ></button>
+            />
           </div>
           <div className="profile__info">
             <div className="profile__name-section">
@@ -48,7 +50,7 @@ function Main({
                 onClick={onEditProfile}
                 className="button button_type_edit-profile"
                 type="button"
-              ></button>
+              />
             </div>
             <h2 className="profile__description">{currentUser.about}</h2>
           </div>
@@ -56,7 +58,7 @@ function Main({
             onClick={onAddPlace}
             className="button button_type_add-card"
             type="button"
-          ></button>
+          />
         </section>
         <section className="elements">
           <ul className="elements__list">
@@ -66,7 +68,10 @@ function Main({
               cards.map((card) => (
                 <Card
                   key={card._id}
-                  {...card}
+                  owner={card.owner}
+                  likes={card.likes}
+                  link={card.link}
+                  name={card.name}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
                   onCardDelete={onCardDelete}
@@ -79,4 +84,19 @@ function Main({
     </>
   );
 }
+
+Main.propTypes = {
+  onEditProfile: PropTypes.func.isRequired,
+  onAddPlace: PropTypes.func.isRequired,
+  onEditAvatar: PropTypes.func.isRequired,
+  onCardClick: PropTypes.func.isRequired,
+  cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  onCardLike: PropTypes.func.isRequired,
+  onCardDelete: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
+};
+
 export default Main;

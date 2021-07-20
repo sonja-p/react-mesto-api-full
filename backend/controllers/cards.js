@@ -26,13 +26,13 @@ module.exports.removeCardById = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       const owner = card.owner.toString();
-      if (owner !== req.user._id) {
-        const error = new Error('У вас нет прав на удаление данной карточки');
-        error.statusCode = 403;
-        next(error);
-      } else if (!card) {
+      if (!card) {
         const error = new Error('Карточка с указанным _id не найдена');
         error.statusCode = 404;
+        next(error);
+      } else if (owner !== req.user._id) {
+        const error = new Error('У вас нет прав на удаление данной карточки');
+        error.statusCode = 403;
         next(error);
       } else {
         card.delete();

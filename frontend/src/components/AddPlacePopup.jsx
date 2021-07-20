@@ -1,9 +1,10 @@
-import PopupWithForm from "./PopupWithForm";
-import { useState } from "react";
+import { useState, React } from 'react';
+import PropTypes from 'prop-types';
+import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
+  const [name, setName] = useState('');
+  const [link, setLink] = useState('');
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -17,12 +18,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     e.preventDefault();
 
     onAddPlace({
-      name: name,
-      link: link,
+      name,
+      link,
     });
 
-    setName("");
-    setLink("");
+    setName('');
+    setLink('');
   }
 
   return (
@@ -46,7 +47,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         maxLength="30"
         required
       />
-      <span className="image-name-error popup__input-error"></span>
+      <span className="image-name-error popup__input-error" />
       <input
         className="popup__input"
         id="image-link"
@@ -57,9 +58,15 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         placeholder="Ссылка на картинку"
         required
       />
-      <span className="image-link-error popup__input-error"></span>
+      <span className="image-link-error popup__input-error" />
     </PopupWithForm>
   );
 }
+
+AddPlacePopup.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAddPlace: PropTypes.func.isRequired,
+};
 
 export default AddPlacePopup;

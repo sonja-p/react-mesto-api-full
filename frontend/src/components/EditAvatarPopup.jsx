@@ -1,5 +1,6 @@
-import { useRef } from "react";
-import PopupWithForm from "./PopupWithForm";
+import { useRef, React } from 'react';
+import PropTypes from 'prop-types';
+import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   const avatarRef = useRef();
@@ -7,7 +8,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar(avatarRef.current.value);
-    avatarRef.current.value = "";
+    avatarRef.current.value = '';
   }
 
   return (
@@ -28,9 +29,15 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         placeholder="Ссылка на картинку"
         required
       />
-      <span className="avatar-link-error popup__input-error"></span>
+      <span className="avatar-link-error popup__input-error" />
     </PopupWithForm>
   );
 }
+
+EditAvatarPopup.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdateAvatar: PropTypes.func.isRequired,
+};
 
 export default EditAvatarPopup;

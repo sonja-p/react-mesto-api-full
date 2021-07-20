@@ -1,10 +1,11 @@
-import { useState } from "react";
-import Header from "./Header";
+import { useState, React } from 'react';
+import PropTypes from 'prop-types';
+import Header from './Header';
 
 const Login = ({ handleLogin, handleSignUp }) => {
   const [data, setData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -26,7 +27,7 @@ const Login = ({ handleLogin, handleSignUp }) => {
 
   return (
     <>
-      <Header handleClick={handleSignUp} buttonName={"Регистрация"} />
+      <Header handleClick={handleSignUp} buttonName="Регистрация" />
       <div className="register page__register">
         <h2 className="register__title">Вход</h2>
         <form className="register__form" onSubmit={handleSubmit}>
@@ -36,7 +37,7 @@ const Login = ({ handleLogin, handleSignUp }) => {
             name="email"
             type="email"
             placeholder="Email"
-            value={data.email || ""}
+            value={data.email || ''}
             onChange={handleChange}
             required
           />
@@ -46,7 +47,7 @@ const Login = ({ handleLogin, handleSignUp }) => {
             name="password"
             type="password"
             placeholder="Пароль"
-            value={data.password || ""}
+            value={data.password || ''}
             onChange={handleChange}
             autoComplete="on"
             required
@@ -58,6 +59,11 @@ const Login = ({ handleLogin, handleSignUp }) => {
       </div>
     </>
   );
+};
+
+Login.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  handleSignUp: PropTypes.func.isRequired,
 };
 
 export default Login;

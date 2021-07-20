@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "no-underscore-dangle": ["error", {
+      "allowAfterThis": true,
+      "allow": ["_id"]
+    }],
+    "no-unused-expressions": ["error", { "allowTernary": true }],
+    "linebreak-style": ["error", "windows"],
+    "class-methods-use-this": ["error", { "exceptMethods": ["_parseResponse", "_checkResponse" ] }]
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "globals": {
+    "fetch": true
+  }
+}

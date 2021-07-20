@@ -1,10 +1,13 @@
-import { useState, useContext, useEffect } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import PopupWithForm from "./PopupWithForm";
+import {
+  useState, useContext, useEffect, React,
+} from 'react';
+import PropTypes from 'prop-types';
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import PopupWithForm from './PopupWithForm';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
@@ -43,26 +46,32 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         id="profile-name"
         name="profile-name"
         type="text"
-        value={name || ""}
+        value={name || ''}
         minLength="2"
         maxLength="40"
         required
       />
-      <span className="profile-name-error popup__input-error"></span>
+      <span className="profile-name-error popup__input-error" />
       <input
         className="popup__input"
         onChange={handleDescriptionChange}
         id="description"
         name="description"
         type="text"
-        value={description || ""}
+        value={description || ''}
         minLength="2"
         maxLength="200"
         required
       />
-      <span className="description-error popup__input-error"></span>
+      <span className="description-error popup__input-error" />
     </PopupWithForm>
   );
 }
+
+EditProfilePopup.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdateUser: PropTypes.func.isRequired,
+};
 
 export default EditProfilePopup;

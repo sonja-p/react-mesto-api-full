@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-  const { authorization } = req.headers;
+  const token = req.cookies.jwt;
 
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  if (!token) {
     const error = new Error('Необходима авторизация');
     error.statusCode = 401;
   }
@@ -13,7 +13,6 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    const token = authorization.replace('Bearer ', '');
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
   } catch (err) {
     const error = new Error('Необходима авторизация');
@@ -25,5 +24,4 @@ module.exports = (req, res, next) => {
   req.user = payload;
 
   next();
-  return req.user;
 };
