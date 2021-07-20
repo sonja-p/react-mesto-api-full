@@ -110,7 +110,7 @@ class Api {
 }
 
 const options = {
-  baseUrl: 'https://puolukka.nomoredomains.rocks',
+  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
 };
 
 const api = new Api(options);
