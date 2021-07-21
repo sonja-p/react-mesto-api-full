@@ -17,7 +17,13 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
           sameSite: true,
         })
-        .send({ message: 'Успешный вход в аккаунт' });
+        .send({
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
+          email: user.email,
+          _id: user._id,
+        });
     })
     .catch(() => {
       const error = new Error('Неправильные почта или пароль');

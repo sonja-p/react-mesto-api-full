@@ -18,7 +18,6 @@ import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/api';
 import auth from '../utils/auth';
 import CurrentUserContext from '../contexts/CurrentUserContext';
-import Spinner from './Spinner';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -34,9 +33,7 @@ function App() {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  // устанавливаем значение null для отображения спиннера при загрузке сайта
-  const [loggedIn, setLoggedIn] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({
     _id: '',
     email: '',
@@ -85,10 +82,7 @@ function App() {
   const handleLogin = ({ password, email }) => {
     auth
       .authorize(password, email)
-      .then((data) => {
-        console.log(data);
-        const { id } = data;
-        localStorage.setItem('_id', id);
+      .then(() => {
         setLoggedIn(true);
         setUserData({ email });
       })
@@ -100,8 +94,7 @@ function App() {
       _id: '',
       email: '',
     });
-    setLoggedIn(null);
-    localStorage.removeItem('id');
+    setLoggedIn(false);
   };
 
   const handleSignIn = () => {
@@ -113,20 +106,14 @@ function App() {
   };
 
   const checkToken = () => {
-    const id = localStorage.getItem('id');
-    if (id) {
-      auth
-        .getContent()
-        .then((data) => {
-          console.log(data);
-          const { _id, email } = data.data;
-          setUserData({ _id, email });
-          setLoggedIn(true);
-        })
-        .catch(handleError);
-    } else {
-      setLoggedIn(false);
-    }
+    auth
+      .getContent()
+      .then((data) => {
+        const { _id, email } = data.data;
+        setUserData({ _id, email });
+        setLoggedIn(true);
+      })
+      .catch(handleError);
   };
 
   useEffect(() => {
@@ -136,8 +123,8 @@ function App() {
   useEffect(() => {
     api
       .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
+      .then((user) => {
+        setCurrentUser(user.data);
       })
       .catch((err) => {
         console.log('Ошибка при загрузке информации пользователя', err.message);
@@ -177,8 +164,8 @@ function App() {
   const handleUpdateUser = (newProfileData) => {
     api
       .setUserInfo(newProfileData)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((user) => {
+        setCurrentUser(user.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -192,8 +179,8 @@ function App() {
   const handleUpdateAvatar = (link) => {
     api
       .setUserAvatar(link)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((user) => {
+        setCurrentUser(user.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -204,23 +191,24 @@ function App() {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
     api
       .getInitialCards()
       .then((data) => {
-        setCards(data);
+        console.log(data);
+        setCards(data.data);
       })
       .catch((err) => {
         console.log('Ошибка при загрузке карточек', err.message);
-      })
-      .finally(() => setIsLoading(false));
+      });
   }, []);
 
   function handleCardLike(card) {
+    console.log(card);
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     (!isLiked ? api.addLike(card._id) : api.deleteLike(card._id))
       .then((newCard) => {
+        console.log(newCard);
         setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
       })
       .catch((err) => {
@@ -243,16 +231,13 @@ function App() {
     api
       .addNewCard(card)
       .then((newCard) => {
-        setCards((allCards) => [newCard, ...allCards]);
+        console.log(newCard.card);
+        setCards((allCards) => [newCard.card, ...allCards]);
         closeAllPopups();
       })
       .catch((err) => {
         console.log('Ошибка при загрузке нового места', err.message);
       });
-  }
-
-  if (loggedIn === null) {
-    return <Spinner />;
   }
 
   return (
@@ -282,7 +267,6 @@ function App() {
               onCardClick={handleCardClick}
               onRemoveCard={handleRemoveCardClick}
               cards={cards}
-              isLoading={isLoading}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
               handleLogout={handleLogout}

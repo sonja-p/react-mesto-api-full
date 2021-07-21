@@ -5,11 +5,12 @@ import { useContext, React } from 'react';
 import PropTypes from 'prop-types';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
-function Card({
-  owner, likes, link, name, onCardClick, onCardDelete, onCardLike,
-}) {
+function Card(props) {
+  const {
+    owner, likes, link, name, onCardClick, onCardDelete, onCardLike,
+  } = props;
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = owner._id === currentUser._id;
+  const isOwn = owner === currentUser._id;
 
   const cardDeleteButtonClassName = `button ${
     isOwn ? 'button_type_delete-card' : 'button_type_delete-card_disable'
@@ -22,15 +23,15 @@ function Card({
   }`;
 
   function handleClick() {
-    onCardClick();
+    onCardClick(props);
   }
 
   function handleDeleteClick() {
-    onCardDelete();
+    onCardDelete(props);
   }
 
   function handleLikeClick() {
-    onCardLike();
+    onCardLike(props);
   }
 
   return (
@@ -58,9 +59,7 @@ function Card({
 }
 
 Card.propTypes = {
-  owner: PropTypes.shape({
-    _id: PropTypes.string,
-  }).isRequired,
+  owner: PropTypes.string.isRequired,
   likes: PropTypes.arrayOf(PropTypes.number).isRequired,
   link: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

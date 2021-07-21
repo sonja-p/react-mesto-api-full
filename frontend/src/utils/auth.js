@@ -3,6 +3,13 @@ class Auth {
     this._url = options.baseUrl;
   }
 
+  // _checkResponse = (response) => {
+  //   if (response.ok) {
+  //     return response.json();
+  //   }
+  //   return Promise.reject(new Error(`Ошибка: ${response.status}`));
+  // }
+
   _checkResponse = (response) => (response.ok
     ? response.json()
     : Promise.reject(new Error(`Ошибка: ${response.status}`)));
@@ -17,7 +24,7 @@ class Auth {
       password: `${password}`,
       email: `${email}`,
     }),
-  }).then((this._checkResponse))
+  }).then((response) => this._checkResponse(response))
 
   authorize(password, email) {
     return fetch(`${this._url}/signin`, {
@@ -30,17 +37,18 @@ class Auth {
         password: `${password}`,
         email: `${email}`,
       }),
-    }).then(this._checkResponse);
+    }).then((response) => this._checkResponse(response));
   }
 
   getContent = () => fetch(`${this._url}/users/me`, {
     method: 'GET',
     credentials: 'include',
-  }).then(this._checkResponse)
+  }).then((response) => this._checkResponse(response))
 }
 
 const options = {
-  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
+  baseUrl: 'http://localhost:5000',
+  // baseUrl: 'https://api.puolukka.nomoredomains.rocks',
 };
 
 const auth = new Auth(options);

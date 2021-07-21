@@ -7,8 +7,6 @@ class Api {
     if (res.ok) {
       return res.json();
     }
-    // eslint-disable-next-line no-console
-    console.log(res);
     return Promise.reject(new Error(`Ошибка: ${res.status}`));
   }
 
@@ -21,7 +19,7 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
-      credentials: 'include',
+      // credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
   }
@@ -55,18 +53,18 @@ class Api {
       .then((res) => this._parseResponse(res));
   }
 
-  getCardLikes() {
-    return fetch(`${this._url}/cards`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        likes: [],
-      }),
-    })
-      .then((res) => this._parseResponse(res));
-  }
+  // getCardLikes() {
+  //   return fetch(`${this._url}/cards`, {
+  //     credentials: 'include',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       likes: [],
+  //     }),
+  //   })
+  //     .then((res) => this._parseResponse(res));
+  // }
 
   handleDeleteCard(id) {
     // Вместо cardId в URL нужно подставить свойство _id соответствующей карточки.
@@ -89,7 +87,7 @@ class Api {
   deleteLike(id) {
     return fetch(`${this._url}/cards/likes/${id}`, {
       method: 'DELETE',
-      credentials: 'include',
+      // credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
   }
@@ -110,7 +108,8 @@ class Api {
 }
 
 const options = {
-  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
+  baseUrl: 'http://localhost:5000',
+  // baseUrl: 'https://api.puolukka.nomoredomains.rocks',
 };
 
 const api = new Api(options);

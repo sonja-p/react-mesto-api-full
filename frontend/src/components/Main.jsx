@@ -3,7 +3,6 @@ import { useContext, React } from 'react';
 import PropTypes from 'prop-types';
 import Card from './Card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
-import Spinner from './Spinner';
 import Header from './Header';
 
 function Main({
@@ -12,7 +11,6 @@ function Main({
   onEditAvatar,
   onCardClick,
   cards,
-  isLoading,
   onCardLike,
   onCardDelete,
   handleLogout,
@@ -62,9 +60,7 @@ function Main({
         </section>
         <section className="elements">
           <ul className="elements__list">
-            {isLoading ? (
-              <Spinner />
-            ) : (
+            {
               cards.map((card) => (
                 <Card
                   key={card._id}
@@ -77,7 +73,7 @@ function Main({
                   onCardDelete={onCardDelete}
                 />
               ))
-            )}
+            }
           </ul>
         </section>
       </main>
@@ -91,7 +87,6 @@ Main.propTypes = {
   onEditAvatar: PropTypes.func.isRequired,
   onCardClick: PropTypes.func.isRequired,
   cards: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isLoading: PropTypes.bool.isRequired,
   onCardLike: PropTypes.func.isRequired,
   onCardDelete: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
