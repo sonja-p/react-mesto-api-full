@@ -44,8 +44,7 @@ class Auth {
 }
 
 const options = {
-  baseUrl: 'http://localhost:5000',
-  // baseUrl: 'https://api.puolukka.nomoredomains.rocks',
+  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
 };
 
 const auth = new Auth(options);
