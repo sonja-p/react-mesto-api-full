@@ -16,7 +16,7 @@ function Card(props) {
     isOwn ? 'button_type_delete-card' : 'button_type_delete-card_disable'
   }`;
 
-  const isLiked = likes.some((i) => i._id === currentUser._id);
+  const isLiked = likes.some((i) => i === currentUser._id);
 
   const cardLikeButtonClassName = `button ${
     isLiked ? 'button_type_like_active' : 'button_type_like'
@@ -60,7 +60,7 @@ function Card(props) {
 
 Card.propTypes = {
   owner: PropTypes.string.isRequired,
-  likes: PropTypes.arrayOf(PropTypes.number).isRequired,
+  likes: PropTypes.arrayOf(PropTypes.string).isRequired,
   link: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onCardClick: PropTypes.func.isRequired,

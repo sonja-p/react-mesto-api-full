@@ -2,7 +2,7 @@ const Card = require('../models/card');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.send({ cards }))
+    .then((cards) => res.send(cards))
     .catch((err) => next(err));
 };
 
@@ -11,7 +11,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .then((card) => res.send({ card }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const error = new Error('Переданы некорректные данные в методы создания карточки');
@@ -36,7 +36,7 @@ module.exports.removeCardById = (req, res, next) => {
         next(error);
       } else {
         card.delete();
-        res.status(200).send({ data: card });
+        res.status(200).send(card);
       }
     })
 
@@ -62,7 +62,7 @@ module.exports.likeCard = (req, res, next) => {
         error.statusCode = 404;
         next(error);
       } else {
-        res.send({ data: card });
+        res.send(card);
       }
     })
     .catch((err) => {
@@ -87,7 +87,7 @@ module.exports.dislikeCard = (req, res, next) => {
         error.statusCode = 404;
         next(error);
       } else {
-        res.send({ data: card });
+        res.send(card);
       }
     })
     .catch((err) => {

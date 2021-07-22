@@ -19,7 +19,7 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
-      // credentials: 'include',
+      credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
   }
@@ -53,18 +53,18 @@ class Api {
       .then((res) => this._parseResponse(res));
   }
 
-  // getCardLikes() {
-  //   return fetch(`${this._url}/cards`, {
-  //     credentials: 'include',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       likes: [],
-  //     }),
-  //   })
-  //     .then((res) => this._parseResponse(res));
-  // }
+  getCardLikes() {
+    return fetch(`${this._url}/cards`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        likes: [],
+      }),
+    })
+      .then((res) => this._parseResponse(res));
+  }
 
   handleDeleteCard(id) {
     // Вместо cardId в URL нужно подставить свойство _id соответствующей карточки.
@@ -87,7 +87,7 @@ class Api {
   deleteLike(id) {
     return fetch(`${this._url}/cards/likes/${id}`, {
       method: 'DELETE',
-      // credentials: 'include',
+      credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
   }

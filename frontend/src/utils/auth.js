@@ -3,13 +3,6 @@ class Auth {
     this._url = options.baseUrl;
   }
 
-  // _checkResponse = (response) => {
-  //   if (response.ok) {
-  //     return response.json();
-  //   }
-  //   return Promise.reject(new Error(`Ошибка: ${response.status}`));
-  // }
-
   _checkResponse = (response) => (response.ok
     ? response.json()
     : Promise.reject(new Error(`Ошибка: ${response.status}`)));
@@ -39,6 +32,10 @@ class Auth {
       }),
     }).then((response) => this._checkResponse(response));
   }
+
+  logout = () => fetch(`${this._url}/logout`, {
+    credentials: 'include',
+  }).then((response) => this._checkResponse(response))
 
   getContent = () => fetch(`${this._url}/users/me`, {
     method: 'GET',

@@ -64,10 +64,8 @@ function Main({
               cards.map((card) => (
                 <Card
                   key={card._id}
-                  owner={card.owner}
-                  likes={card.likes}
-                  link={card.link}
-                  name={card.name}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...card}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
                   onCardDelete={onCardDelete}

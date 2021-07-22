@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import {
   Route, Switch, useHistory, Redirect,
 } from 'react-router-dom';
@@ -40,6 +40,8 @@ function App() {
   });
   const [message, setMessage] = useState({ text: '', type: '' });
 
+  const [cards, setCards] = useState([]);
+
   const history = useHistory();
 
   const handleError = (error) => {
@@ -56,8 +58,7 @@ function App() {
     auth
       .register(password, email)
       .then((data) => {
-        console.log(data);
-        const { _id, userEmail } = data.data;
+        const { _id, userEmail } = data;
         setUserData({ _id, userEmail });
 
         setIsInfoTooltipPopupOpen(true);
@@ -89,14 +90,6 @@ function App() {
       .catch(handleError);
   };
 
-  const handleLogout = () => {
-    setUserData({
-      _id: '',
-      email: '',
-    });
-    setLoggedIn(false);
-  };
-
   const handleSignIn = () => {
     history.push('/sign-in');
   };
@@ -109,7 +102,7 @@ function App() {
     auth
       .getContent()
       .then((data) => {
-        const { _id, email } = data.data;
+        const { _id, email } = data;
         setUserData({ _id, email });
         setLoggedIn(true);
       })
@@ -124,12 +117,21 @@ function App() {
     api
       .getUserInfo()
       .then((user) => {
-        setCurrentUser(user.data);
+        setCurrentUser(user);
       })
       .catch((err) => {
         console.log('Ошибка при загрузке информации пользователя', err.message);
       });
   }, []);
+
+  const handleLogout = () => {
+    auth
+      .logout()
+      .then(() => {
+        history.push('/sign-in');
+        setLoggedIn(false);
+      });
+  };
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -165,7 +167,7 @@ function App() {
     api
       .setUserInfo(newProfileData)
       .then((user) => {
-        setCurrentUser(user.data);
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch((err) => {
@@ -180,7 +182,7 @@ function App() {
     api
       .setUserAvatar(link)
       .then((user) => {
-        setCurrentUser(user.data);
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch((err) => {
@@ -188,14 +190,11 @@ function App() {
       });
   };
 
-  const [cards, setCards] = useState([]);
-
   useEffect(() => {
     api
       .getInitialCards()
       .then((data) => {
-        console.log(data);
-        setCards(data.data);
+        setCards(data.reverse());
       })
       .catch((err) => {
         console.log('Ошибка при загрузке карточек', err.message);
@@ -203,12 +202,10 @@ function App() {
   }, []);
 
   function handleCardLike(card) {
-    console.log(card);
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     (!isLiked ? api.addLike(card._id) : api.deleteLike(card._id))
       .then((newCard) => {
-        console.log(newCard);
         setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
       })
       .catch((err) => {
@@ -231,8 +228,7 @@ function App() {
     api
       .addNewCard(card)
       .then((newCard) => {
-        console.log(newCard.card);
-        setCards((allCards) => [newCard.card, ...allCards]);
+        setCards((allCards) => [newCard, ...allCards]);
         closeAllPopups();
       })
       .catch((err) => {

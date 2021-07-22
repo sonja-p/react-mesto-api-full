@@ -40,7 +40,7 @@ module.exports.findCurrentUserById = (req, res, next) => {
         error.statusCode = 404;
         next(error);
       }
-      return res.send({ data: user });
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -70,12 +70,10 @@ module.exports.createUser = (req, res, next) => {
           email, password: hash,
         })
           .then((newUser) => res.send({
-            data: {
-              name: newUser.name,
-              about: newUser.about,
-              avatar: newUser.avatar,
-              email: newUser.email,
-            },
+            name: newUser.name,
+            about: newUser.about,
+            avatar: newUser.avatar,
+            email: newUser.email,
           }))
           .catch((err) => {
             if (err.name === 'MongoError' && err.code === 11000) {
@@ -111,7 +109,7 @@ module.exports.updateProfile = (req, res, next) => {
         error.statusCode = 404;
         next(error);
       } else {
-        res.send({ data: user });
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -146,7 +144,7 @@ module.exports.updateAvatar = (req, res, next) => {
         error.statusCode = 404;
         next(error);
       } else {
-        res.send({ data: user });
+        res.send(user);
       }
     })
     .catch((err) => {

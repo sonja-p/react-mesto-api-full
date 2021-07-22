@@ -68,6 +68,10 @@ app.use('/users', auth, require('./routes/users'));
 
 app.use('/cards', auth, require('./routes/cards'));
 
+app.use('/logout', auth, (req, res) => {
+  res.clearCookie('jwt').send({ message: 'Выход из учетной записи' });
+});
+
 app.use((req, res, next) => {
   const error = new Error('Такой страницы не существует');
   error.statusCode = 404;
