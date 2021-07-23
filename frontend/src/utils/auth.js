@@ -1,6 +1,9 @@
+import reqOptions from './constants';
+
 class Auth {
   constructor(options) {
     this._url = options.baseUrl;
+    this._headers = options.headers;
   }
 
   _checkResponse = (response) => (response.ok
@@ -43,10 +46,6 @@ class Auth {
   }).then((response) => this._checkResponse(response))
 }
 
-const options = {
-  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
-};
-
-const auth = new Auth(options);
+const auth = new Auth(reqOptions);
 
 export default auth;

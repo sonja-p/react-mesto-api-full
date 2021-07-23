@@ -1,6 +1,9 @@
+import reqOptions from './constants';
+
 class Api {
   constructor(options) {
     this._url = options.baseUrl;
+    this._headers = options.headers;
   }
 
   _parseResponse = (res) => {
@@ -107,10 +110,6 @@ class Api {
   }
 }
 
-const options = {
-  baseUrl: 'https://api.puolukka.nomoredomains.rocks',
-};
-
-const api = new Api(options);
+const api = new Api(reqOptions);
 
 export default api;
