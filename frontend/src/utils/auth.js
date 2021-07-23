@@ -11,11 +11,9 @@ class Auth {
     : Promise.reject(new Error(`Ошибка: ${response.status}`)));
 
   register = (password, email) => fetch(`${this._url}/signup`, {
+    headers: this._headers,
     method: 'POST',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       password: `${password}`,
       email: `${email}`,
@@ -24,11 +22,9 @@ class Auth {
 
   authorize(password, email) {
     return fetch(`${this._url}/signin`, {
+      headers: this._headers,
       method: 'POST',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         password: `${password}`,
         email: `${email}`,
@@ -37,10 +33,12 @@ class Auth {
   }
 
   logout = () => fetch(`${this._url}/logout`, {
+    headers: this._headers,
     credentials: 'include',
   }).then((response) => this._checkResponse(response))
 
   getContent = () => fetch(`${this._url}/users/me`, {
+    headers: this._headers,
     method: 'GET',
     credentials: 'include',
   }).then((response) => this._checkResponse(response))

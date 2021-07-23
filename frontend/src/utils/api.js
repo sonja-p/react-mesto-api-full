@@ -15,6 +15,7 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
+      headers: this._headers,
       credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
@@ -22,6 +23,7 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
+      headers: this._headers,
       credentials: 'include',
     })
       .then((res) => this._parseResponse(res));
@@ -31,9 +33,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: this._headers,
       // в теле — JSON с двумя свойствами — name и about.
       // Значениями этих свойств должны быть обновлённые данные пользователя
       body: JSON.stringify(data),
@@ -45,9 +45,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: inputData.name,
         link: inputData.link,
@@ -58,10 +56,8 @@ class Api {
 
   getCardLikes() {
     return fetch(`${this._url}/cards`, {
+      headers: this._headers,
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         likes: [],
       }),
@@ -72,6 +68,7 @@ class Api {
   handleDeleteCard(id) {
     // Вместо cardId в URL нужно подставить свойство _id соответствующей карточки.
     return fetch(`${this._url}/cards/${id}`, {
+      headers: this._headers,
       method: 'DELETE',
       credentials: 'include',
     })
@@ -81,6 +78,7 @@ class Api {
   addLike(id) {
     // Вместо cardId в URL нужно подставить свойство _id соответствующей карточки.
     return fetch(`${this._url}/cards/likes/${id}`, {
+      headers: this._headers,
       method: 'PUT',
       credentials: 'include',
     })
@@ -89,6 +87,7 @@ class Api {
 
   deleteLike(id) {
     return fetch(`${this._url}/cards/likes/${id}`, {
+      headers: this._headers,
       method: 'DELETE',
       credentials: 'include',
     })
@@ -97,11 +96,9 @@ class Api {
 
   setUserAvatar(link) {
     return fetch(`${this._url}/users/me/avatar`, {
+      headers: this._headers,
       method: 'PATCH',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         avatar: `${link}`,
       }),
