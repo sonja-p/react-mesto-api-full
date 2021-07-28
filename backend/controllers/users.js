@@ -32,6 +32,33 @@ module.exports.login = (req, res, next) => {
     });
 };
 
+module.exports.findUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => res.send({ users }))
+    .catch((err) => next(err));
+};
+
+module.exports.findUserById = (req, res, next) => {
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (!user) {
+        const error = new Error('Запрашиваемый пользователь не найден');
+        error.statusCode = 404;
+        next(error);
+      } else {
+        res.send({ data: user });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        const error = new Error('Запрашиваемый пользователь не найден');
+        error.statusCode = 404;
+        next(error);
+      }
+      next(err);
+    });
+};
+
 module.exports.findCurrentUserById = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {

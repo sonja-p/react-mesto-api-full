@@ -98,20 +98,17 @@ function App() {
     history.push('/sign-up');
   };
 
-  const checkToken = () => {
-    auth
-      .getContent()
-      .then((data) => {
-        const { _id, email } = data;
-        setUserData({ _id, email });
+  useEffect(() => {
+    api
+      .getUserInfo()
+      .then((user) => {
+        setCurrentUser(user);
         setLoggedIn(true);
       })
-      .catch(handleError);
-  };
-
-  useEffect(() => {
-    checkToken();
-  }, [loggedIn]);
+      .catch((err) => {
+        console.log('Ошибка при загрузке информации пользователя', err.message);
+      });
+  }, []);
 
   useEffect(() => {
     api
