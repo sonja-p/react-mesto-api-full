@@ -83,9 +83,10 @@ function App() {
   const handleLogin = ({ password, email }) => {
     auth
       .authorize(password, email)
-      .then(() => {
+      .then((user) => {
         setLoggedIn(true);
         setUserData({ email });
+        setCurrentUser(user);
       })
       .catch(handleError);
   };
