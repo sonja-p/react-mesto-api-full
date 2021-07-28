@@ -127,6 +127,12 @@ function App() {
       .then(() => {
         history.push('/sign-in');
         setLoggedIn(false);
+        setCurrentUser({
+          name: '',
+          about: '',
+          avatar: '',
+          _id: '',
+        });
       });
   };
 
