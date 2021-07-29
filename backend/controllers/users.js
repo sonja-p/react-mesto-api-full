@@ -16,6 +16,7 @@ module.exports.login = (req, res, next) => {
           maxAge: 3600000,
           httpOnly: true,
           sameSite: true,
+          secure: false,
         })
         .send({
           name: user.name,
