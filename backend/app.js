@@ -69,7 +69,12 @@ app.use('/users', auth, require('./routes/users'));
 app.use('/cards', auth, require('./routes/cards'));
 
 app.use('/logout', auth, (req, res) => {
-  res.clearCookie('jwt').send({ message: 'Выход из учетной записи' });
+  res.clearCookie('jwt', {
+    maxAge: 3600000,
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true,
+  }).send({ message: 'Выход из учетной записи' });
 });
 
 app.use((req, res, next) => {
