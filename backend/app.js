@@ -25,6 +25,7 @@ const limiter = rateLimit({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(requestLogger);
 app.use(limiter);
 app.use(cookieParser());
 
@@ -34,8 +35,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
-app.use(requestLogger);
 
 app.use(cors);
 
