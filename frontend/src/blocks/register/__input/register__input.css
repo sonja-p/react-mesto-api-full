@@ -34,9 +34,3 @@
   font-size: 14px;
   line-height: 17px;
 }
-
-@media screen and (max-width: 540px) {
-  .register__input {
-    padding-bottom: 13px;
-  }
-}

@@ -112,6 +112,17 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    api
+      .getInitialCards()
+      .then((data) => {
+        setCards(data.reverse());
+      })
+      .catch((err) => {
+        console.log('Ошибка при загрузке карточек', err.message);
+      });
+  }, []);
+
   const handleLogout = () => {
     auth
       .logout()
@@ -184,17 +195,6 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data.reverse());
-      })
-      .catch((err) => {
-        console.log('Ошибка при загрузке карточек', err.message);
-      });
-  }, []);
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i === currentUser._id);
 
@@ -260,8 +260,6 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
               handleLogout={handleLogout}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              loggedIn={loggedIn}
               email={userData.email}
             />
           </Switch>

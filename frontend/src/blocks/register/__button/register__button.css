@@ -19,5 +19,7 @@
   .register__button {
     font-size: 16px;
     line-height: 19px;
+    margin-top: 145px;
+    height: 46px;
   }
 }

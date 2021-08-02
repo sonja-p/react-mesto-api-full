@@ -13,7 +13,7 @@
 
 @media screen and (max-width: 750px) {
     .profile__name-section {
-        margin-top: 26px;
+        margin-top: 28px;
         -webkit-box-pack: center;
             -ms-flex-pack: center;
                 justify-content: center;

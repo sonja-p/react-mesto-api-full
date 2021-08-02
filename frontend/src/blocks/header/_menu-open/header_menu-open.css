@@ -1,0 +1,12 @@
+.header_menu-open .header__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 62px;
+  width: 100%;
+}
+
+.header_menu-open .header__menu {
+  background: transparent url('../../../images/close.svg') center no-repeat;
+  background-size: 44px 44px;
+}
