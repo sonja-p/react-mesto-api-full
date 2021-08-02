@@ -112,17 +112,6 @@ function App() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   api
-  //     .getUserInfo()
-  //     .then((user) => {
-  //       setCurrentUser(user);
-  //     })
-  //     .catch((err) => {
-  //       console.log('Ошибка при загрузке информации пользователя', err.message);
-  //     });
-  // }, []);
-
   const handleLogout = () => {
     auth
       .logout()
