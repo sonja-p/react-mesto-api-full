@@ -84,9 +84,9 @@ function App() {
     auth
       .authorize(password, email)
       .then((user) => {
-        setLoggedIn(true);
         setUserData({ email });
         setCurrentUser(user);
+        setLoggedIn(true);
       })
       .catch(handleError);
   };
@@ -103,6 +103,7 @@ function App() {
     api
       .getUserInfo()
       .then((user) => {
+        setUserData({ email: user.email });
         setCurrentUser(user);
         setLoggedIn(true);
       })
@@ -111,16 +112,16 @@ function App() {
       });
   }, []);
 
-  useEffect(() => {
-    api
-      .getUserInfo()
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .catch((err) => {
-        console.log('Ошибка при загрузке информации пользователя', err.message);
-      });
-  }, []);
+  // useEffect(() => {
+  //   api
+  //     .getUserInfo()
+  //     .then((user) => {
+  //       setCurrentUser(user);
+  //     })
+  //     .catch((err) => {
+  //       console.log('Ошибка при загрузке информации пользователя', err.message);
+  //     });
+  // }, []);
 
   const handleLogout = () => {
     auth

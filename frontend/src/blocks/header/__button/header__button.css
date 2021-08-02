@@ -8,3 +8,14 @@
 .header__button:hover {
   opacity: 0.6;
 }
+
+@media screen and (max-width: 750px) {
+  .header__button {
+    /*display: none; */
+    /*position: absolute;
+    top: 10px;
+    right: center;*/
+    font-size: 18px;
+    line-height: 22px;
+  }
+}

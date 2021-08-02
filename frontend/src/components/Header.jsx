@@ -17,7 +17,7 @@ function Header({
           {buttonName}
         </button>
       </div>
-      <button type="button" onClick={() => console.log('navbar')} className="button header__menu" />
+      {loggedIn && <button type="button" onClick={() => console.log('navbar')} className="button header__menu" />}
     </header>
   );
 }
