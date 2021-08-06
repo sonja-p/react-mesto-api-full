@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-import { React } from 'react';
+import { React, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 function PopupWithForm({
@@ -11,8 +10,32 @@ function PopupWithForm({
   onClose,
   onSubmit,
 }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscapeClose = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEscapeClose);
+    // eslint-disable-next-line consistent-return
+    return () => {
+      document.removeEventListener('keydown', handleEscapeClose);
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClose = (event) => {
+    if (event.target === event.currentTarget && isOpen) {
+      onClose();
+    }
+  };
+
   return (
-    <section className={`popup ${isOpen && 'popup_opened'}`}>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <section
+      className={`popup ${isOpen && 'popup_opened'}`}
+      onMouseDown={handleOverlayClose}
+    >
       <form
         className="popup__container"
         name={name}
@@ -24,6 +47,7 @@ function PopupWithForm({
           onClick={onClose}
           className="button button_type_close"
           type="button"
+          aria-label="Close"
         />
         <button className="button popup__save-button" type="submit">
           {submitButtonTitle}

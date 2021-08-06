@@ -37,7 +37,7 @@ function Main({
             />
             <button
               onClick={onEditAvatar}
-              className="button button_type_change-avatar"
+              className="button button_type_edit-avatar"
               type="button"
             />
           </div>

@@ -1,10 +1,34 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import { React, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 function ImagePopup({ card, onClose, isOpen }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscapeClose = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEscapeClose);
+    // eslint-disable-next-line consistent-return
+    return () => {
+      document.removeEventListener('keydown', handleEscapeClose);
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClose = (event) => {
+    if (event.target === event.currentTarget && isOpen) {
+      onClose();
+    }
+  };
+
   return (
-    <section className={`popup popup_type_view ${isOpen && 'popup_opened'}`}>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <section
+      className={`popup popup_type_view ${isOpen && 'popup_opened'}`}
+      onMouseDown={handleOverlayClose}
+    >
       <div className="popup__view">
         <img
           src={card.link}
