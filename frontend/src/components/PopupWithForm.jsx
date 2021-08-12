@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 function PopupWithForm({
@@ -9,6 +9,7 @@ function PopupWithForm({
   isOpen,
   onClose,
   onSubmit,
+  isDisabled = false,
 }) {
   useEffect(() => {
     if (!isOpen) return;
@@ -49,7 +50,13 @@ function PopupWithForm({
           type="button"
           aria-label="Close"
         />
-        <button className="button popup__save-button" type="submit">
+        <button
+          type="submit"
+          className={`button popup__save-button ${
+            isDisabled && 'popup__save-button_disabled'
+          }`}
+          disabled={isDisabled}
+        >
           {submitButtonTitle}
         </button>
       </form>
@@ -66,11 +73,13 @@ PopupWithForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
+  isDisabled: PropTypes.bool,
 };
 
 PopupWithForm.defaultProps = {
   children: undefined,
   onSubmit: undefined,
+  isDisabled: undefined,
 };
 
 export default PopupWithForm;

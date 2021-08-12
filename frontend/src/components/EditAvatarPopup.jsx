@@ -1,35 +1,44 @@
-import { useRef, React } from 'react';
+import { useEffect, React } from 'react';
 import PropTypes from 'prop-types';
 import PopupWithForm from './PopupWithForm';
+import { useFormWithValidation } from '../hooks/useForm';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const avatarRef = useRef();
+function EditAvatarPopup({
+  isOpen, onClose, onUpdateAvatar, isSending,
+}) {
+  const {
+    values, handleChange, resetForm, errors, isValid,
+  } = useFormWithValidation();
+
+  useEffect(() => {
+    resetForm({});
+  }, [isOpen, resetForm]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar(avatarRef.current.value);
-    avatarRef.current.value = '';
+    onUpdateAvatar(values.avatar);
   }
 
   return (
     <PopupWithForm
       title="Обновить аватар"
       name="edit-avatar"
-      submitButtonTitle="Сохранить"
+      submitButtonTitle={isSending ? 'Сохранение...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isDisabled={!isValid || isSending}
     >
       <input
         className="popup__input"
-        ref={avatarRef}
+        onChange={handleChange}
         id="avatar-link"
-        name="avatar-link"
+        name="avatar"
         type="url"
         placeholder="Ссылка на картинку"
         required
       />
-      <span className="avatar-link-error popup__input-error" />
+      <span className="popup__input-error" id="avatar-link-error">{errors.avatar || ''}</span>
     </PopupWithForm>
   );
 }
@@ -38,6 +47,11 @@ EditAvatarPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onUpdateAvatar: PropTypes.func.isRequired,
+  isSending: PropTypes.bool,
+};
+
+EditAvatarPopup.defaultProps = {
+  isSending: undefined,
 };
 
 export default EditAvatarPopup;

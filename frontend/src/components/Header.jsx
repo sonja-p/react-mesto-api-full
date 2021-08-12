@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable no-console */
 import { React, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';

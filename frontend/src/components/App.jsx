@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route, Switch, useHistory, Redirect,
 } from 'react-router-dom';
@@ -39,6 +39,7 @@ function App() {
     email: '',
   });
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [isCardSending, setIsCardSending] = useState(false);
 
   const [cards, setCards] = useState([]);
 
@@ -168,7 +169,9 @@ function App() {
     setIsImagePopupOpen(true);
   };
 
+  const [isUserSending, setIsUserSending] = useState(false);
   const handleUpdateUser = (newProfileData) => {
+    setIsUserSending(true);
     api
       .setUserInfo(newProfileData)
       .then((user) => {
@@ -180,7 +183,8 @@ function App() {
           'Ошибка при загрузке новой информации пользователя',
           err.message,
         );
-      });
+      })
+      .finally(() => setIsUserSending(false));
   };
 
   const handleUpdateAvatar = (link) => {
@@ -219,6 +223,7 @@ function App() {
   }
 
   function handleAddPlace(card) {
+    setIsCardSending(true);
     api
       .addNewCard(card)
       .then((newCard) => {
@@ -227,7 +232,8 @@ function App() {
       })
       .catch((err) => {
         console.log('Ошибка при загрузке нового места', err.message);
-      });
+      })
+      .finally(() => setIsCardSending(false));
   }
 
   return (
@@ -275,11 +281,13 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isSending={isUserSending}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlace}
+          isSending={isCardSending}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
