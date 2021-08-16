@@ -40,6 +40,7 @@ function App() {
   });
   const [message, setMessage] = useState({ text: '', type: '' });
   const [isCardSending, setIsCardSending] = useState(false);
+  const [cardForDelete, setCardForDelete] = useState(null);
 
   const [cards, setCards] = useState([]);
 
@@ -151,7 +152,8 @@ function App() {
     setIsAddPlacePopupOpen(true);
   };
 
-  const handleRemoveCardClick = () => {
+  const handleCardDeleteRequest = (card) => {
+    setCardForDelete(card);
     setIsRemoveCardPopupOpen(true);
   };
 
@@ -162,6 +164,7 @@ function App() {
     setIsRemoveCardPopupOpen(false);
     setIsImagePopupOpen(false);
     setIsInfoTooltipPopupOpen(false);
+    setCardForDelete(undefined);
   };
 
   const handleCardClick = (card) => {
@@ -211,11 +214,12 @@ function App() {
       });
   }
 
-  function handleCardDelete(card) {
+  function handleCardDelete(evt) {
+    evt.preventDefault();
     api
-      .handleDeleteCard(card._id)
+      .handleDeleteCard(cardForDelete._id)
       .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
+        setCards((state) => state.filter((c) => c._id !== cardForDelete._id));
       })
       .catch((err) => {
         console.log('Ошибка при удалении карточки', err.message);
@@ -261,10 +265,9 @@ function App() {
               onEditProfile={handleEditProfileClick}
               onEditAvatar={handleEditAvatarClick}
               onCardClick={handleCardClick}
-              onRemoveCard={handleRemoveCardClick}
               cards={cards}
               onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
+              onCardDelete={handleCardDeleteRequest}
               handleLogout={handleLogout}
               email={userData.email}
             />
@@ -299,6 +302,7 @@ function App() {
           name="delete"
           submitButtonTitle="Да"
           isOpen={isRemoveCardPopupOpen}
+          onSubmit={handleCardDelete}
           onClose={closeAllPopups}
         />
         <ImagePopup
