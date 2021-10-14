@@ -222,6 +222,7 @@ function App() {
       .handleDeleteCard(cardForDelete._id)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== cardForDelete._id));
+        closeAllPopups();
       })
       .catch((err) => {
         console.log('Ошибка при удалении карточки', err.message);
