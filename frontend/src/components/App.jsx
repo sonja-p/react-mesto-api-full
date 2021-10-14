@@ -115,15 +115,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data.reverse());
-      })
-      .catch((err) => {
-        console.log('Ошибка при загрузке карточек', err.message);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getInitialCards()
+        .then((data) => {
+          setCards(data.reverse());
+        })
+        .catch((err) => {
+          console.log('Ошибка при загрузке карточек', err.message);
+        });
+    }
+  }, [loggedIn]);
 
   const handleLogout = () => {
     auth
