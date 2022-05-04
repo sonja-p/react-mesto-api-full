@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* sojka24@84.252.139.226:/home/sojka24/react-mesto-api-full/frontend",
+    "deploy": "npm run build && scp -r ./build/* sojka24@51.250.105.145:/home/sojka24/react-mesto-api-full/frontend",
     "lint": "npx eslint ."
   },
   "eslintConfig": {

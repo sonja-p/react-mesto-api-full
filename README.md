@@ -14,9 +14,9 @@
 
 ## Ссылки
 
-* Ссылка на сайт, размещенный на Яндекс.Облаке - <https://puolukka.nomoredomains.rocks> 
-* Доменное имя api - <https://api.puolukka.nomoredomains.rocks>
-* Публичный IP-адрес сервера - <http://84.252.139.226/>
+* Ссылка на сайт, размещенный на Яндекс.Облаке - <https://puolukka.nomoredomains.space> 
+* Доменное имя api - <https://api.puolukka.nomoredomains.space>
+* Публичный IP-адрес сервера - <http://51.250.105.145/>
 
 ---
 
