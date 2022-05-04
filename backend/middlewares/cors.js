@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://puolukka.nomoredomains.rocks',
-  'http://puolukka.nomoredomains.rocks',
+  'https://puolukka.nomoredomains.space',
+  'http://puolukka.nomoredomains.space',
   'http://localhost:3000',
 ];
 
